@@ -19,34 +19,6 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/users', userRoutes);
 
-// * ============** get single User from DB ↓ **=============
-app.get('/users/:id', async (req: Request, res: Response) => {
-  // console.log(req.params.id);
-  try {
-    const result = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-      req.params.id,
-    ]);
-
-    if (result.rows.length === 0) {
-      res.status(404).json({
-        success: false,
-        message: 'User Not Found',
-      });
-    } else {
-      res.status(200).json({
-        success: true,
-        message: 'User Found',
-        data: result.rows[0],
-      });
-    }
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
-    });
-  }
-});
-
 // * ============** update User from DB ↓ **=============
 app.put('/users/:id', async (req: Request, res: Response) => {
   // console.log(req.params.id);
