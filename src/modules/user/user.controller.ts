@@ -95,4 +95,5 @@ export const userControllers = {
   createUser,
   getUser,
   getSingleUser,
+  updateSingleUser,
 };
