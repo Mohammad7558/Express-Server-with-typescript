@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import config from './config';
 import initDb from './config/db';
+import { authRoutes } from './modules/auth/auth.routes';
 import { useTodosRoute } from './modules/todos/todos.route';
 import { userRoutes } from './modules/user/user.Routes';
 
@@ -23,6 +24,9 @@ app.use('/users', userRoutes);
 // crud todos
 
 app.use('/todos', useTodosRoute);
+
+// * -------- Auth Routers -------------
+app.use('/auth', authRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
