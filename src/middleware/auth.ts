@@ -3,20 +3,27 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import config from '../config';
 
 const auth = () => {
-  return (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-    if (!token) {
-      return res.status(500).json({
+  return async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(500).json({
+          success: false,
+          message: 'You Are Not Allowed',
+        });
+      }
+
+      const decoded = jwt.verify(token, config.jwtSecrete as string);
+      console.log(decoded);
+
+      req.user = decoded as JwtPayload;
+      next();
+    } catch (err: any) {
+      res.status(500).json({
         success: false,
-        message: 'You Are Not Allowed',
+        message: err.message,
       });
     }
-
-    const decoded = jwt.verify(token, config.jwtSecrete as string);
-    console.log(decoded);
-
-    req.user = decoded as JwtPayload;
-    next();
   };
 };
 
